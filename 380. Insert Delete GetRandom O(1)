@@ -1,0 +1,66 @@
+class RandomizedSet {
+    vector<int> v;
+    unordered_map<int,int> mp;
+public:
+   
+    RandomizedSet() {
+    }
+
+    bool search(int val){
+         if(mp.find(val)!=mp.end())
+            return true;
+         return false;
+    }
+
+    
+    bool insert(int val) {
+
+        if(search(val))
+            return false;
+
+        v.push_back(val);
+        mp[val] = v.size()-1;
+        return true;
+    }
+
+    
+    bool remove(int val) {
+
+        if(!search(val))
+            return false;
+
+       
+        auto it = mp.find(val);
+
+        // place the last lement at the index 
+        v[it->second] = v.back();
+
+        // remove the last element, since its copies to new index
+
+        // we are doing these 2 steps, because we dont array to be copied to 
+        // all the elements after the index.
+
+        v.pop_back();
+
+        // update the idx of last element
+        mp[v[it->second]] = it->second;
+
+        // remove the from the map elemnt
+        mp.erase(val);
+        return true;
+    }
+
+   
+    int getRandom() {
+
+        return v[rand()%v.size()];
+    }
+};
+
+/**
+ * Your RandomizedSet object will be instantiated and called as such:
+ * RandomizedSet* obj = new RandomizedSet();
+ * bool param_1 = obj->insert(val);
+ * bool param_2 = obj->remove(val);
+ * int param_3 = obj->getRandom();
+ */
